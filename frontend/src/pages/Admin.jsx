@@ -415,7 +415,19 @@ export default function Admin() {
         texts.push(field.question);
         if (field.field_type === 'choice') texts.push(...parseOptions(field.options));
       });
-      const translated = await translationService.translateTexts(texts, formContentLanguageCode, formLanguageCode);
+      let translated = texts;
+      let savedLanguageCode = formLanguageCode;
+      let savedWithoutTranslation = false;
+      try {
+        translated = await translationService.translateTexts(texts, formContentLanguageCode, formLanguageCode);
+      } catch (translationError) {
+        if (![502, 503].includes(translationError.response?.status)) throw translationError;
+        // Translation is optional for saving. Keep the form's declared language
+        // aligned with its actual text when the hosted provider is unavailable.
+        translated = texts;
+        savedLanguageCode = formContentLanguageCode;
+        savedWithoutTranslation = true;
+      }
       let textIndex = 2;
       const localizedFields = fields.map((field, index) => {
         const question = translated[textIndex++] || field.question;
@@ -430,7 +442,7 @@ export default function Admin() {
         source_name: formName,
         source_description: formDescription,
         source_language_code: formContentLanguageCode,
-        language_code: formLanguageCode,
+        language_code: savedLanguageCode,
         fields: localizedFields.map((field, index) => ({
           ...field,
           source_question: fields[index].question,
@@ -439,10 +451,14 @@ export default function Admin() {
       };
       if (editingFormId) {
         await formService.updateForm(editingFormId, payload);
-        setSuccess('Form updated successfully!');
+        setSuccess(savedWithoutTranslation
+          ? 'Form updated in its original language. Configure SARVAM_API_KEY on the API service to enable automatic translation.'
+          : 'Form updated successfully!');
       } else {
         await formService.createForm(payload);
-        setSuccess('Form created successfully!');
+        setSuccess(savedWithoutTranslation
+          ? 'Form created in its original language. Configure SARVAM_API_KEY on the API service to enable automatic translation.'
+          : 'Form created successfully!');
       }
       setShowModal(false);
       loadData();
@@ -897,7 +913,7 @@ export default function Admin() {
                 <select id="form-language-code" className="form-input form-select" value={formLanguageCode} onChange={(event) => setFormLanguageCode(event.target.value)}>
                   {SUPPORTED_LANGUAGES.map((language) => <option key={language.code} value={language.code}>{language.name}</option>)}
                 </select>
-                <small className="field-hint">The form name, description, questions, and choices are translated before saving. Users can switch to Tamil, English, or Hindi while filling it.</small>
+                <small className="field-hint">The form name, description, questions, and choices are translated before saving when SARVAM_API_KEY is configured. If translation is unavailable, the form saves in its original language.</small>
                 <Input label="Form Name" value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="e.g. Patient Intake Form" required />
               </div>
               <div className="admin-voice-input admin-voice-textarea">
