@@ -199,3 +199,9 @@ Render deploys the API and frontend at these service URLs:
 - API and Swagger docs: `https://mahi-voice-assist-api.onrender.com/docs`
 
 If these names are already taken in your Render workspace, change both service names in `render.yaml` and update the matching frontend API URL and backend CORS origin before applying the Blueprint.
+
+## 🌐 Hosting the frontend on GitHub Pages
+
+The React frontend can also be hosted on GitHub Pages. A GitHub Actions workflow builds and deploys `frontend/` whenever frontend files are pushed to `main`. In the GitHub repository, open **Settings → Pages** and select **GitHub Actions** as the build and deployment source. The site URL will be `https://shabaries.github.io/Mahi-Voice-Assist/`.
+
+GitHub Pages only hosts static files; it does not run FastAPI or store application data. The frontend needs a live backend. The workflow defaults to `https://mahi-voice-assist-api.onrender.com`; set the repository Actions variable `VITE_API_BASE_URL` if the backend has a different URL. Configure the backend CORS allowlist with the Pages origin `https://shabaries.github.io`.
