@@ -1,9 +1,3 @@
-databases:
-  - name: mahi-voice-assist-db
-    plan: free
-    databaseName: voice_form
-    user: voice_form
-
 services:
   - type: web
     name: mahi-voice-assist-api
@@ -19,9 +13,7 @@ services:
       - key: APP_ENV
         value: production
       - key: DATABASE_URL
-        fromDatabase:
-          name: mahi-voice-assist-db
-          property: connectionString
+        sync: false   # Paste your Neon connection string here in the Render dashboard
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
