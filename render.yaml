@@ -34,26 +34,6 @@ services:
         sync: false
       - key: BOOTSTRAP_ADMIN_PASSWORD
         sync: false
-      - key: SARVAM_API_KEY
-        sync: false
-      - key: GROQ_API_KEY
-        sync: false
-      - key: OPENAI_API_KEY
-        sync: false
-      - key: ELEVENLABS_API_KEY
-        sync: false
-      - key: SMTP_HOST
-        sync: false
-      - key: SMTP_PORT
-        value: "587"
-      - key: SMTP_USERNAME
-        sync: false
-      - key: SMTP_PASSWORD
-        sync: false
-      - key: SMTP_FROM_EMAIL
-        sync: false
-      - key: SMTP_SECURITY
-        value: starttls
 
   - type: web
     name: mahi-voice-assist-web
