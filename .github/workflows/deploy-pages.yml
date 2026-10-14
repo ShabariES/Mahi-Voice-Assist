@@ -39,6 +39,8 @@ jobs:
         env:
           VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL || 'https://mahi-voice-assist-api.onrender.com' }}
           GITHUB_ACTIONS: 'true'
+      - name: Add GitHub Pages SPA fallback
+        run: cp gh-pages/404.html dist/404.html
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
