@@ -1,0 +1,31 @@
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Python runtime and generated files
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.py[cod]
+**/*.log
+**/voice_form.db
+**/*.sqlite
+**/*.sqlite3
+
+# Frontend dependencies and build output
+**/node_modules/
+**/dist/
+**/coverage/
+npm-debug.log*
+
+# Local tools, temporary files, and generated reports
+.vscode/
+.idea/
+tmp/
+output/
+*.tmp
+*.bak
