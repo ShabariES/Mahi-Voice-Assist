@@ -16,6 +16,8 @@ services:
         sync: false   # Paste your Neon connection string here in the Render dashboard
       - key: JWT_SECRET
         generateValue: true
+      - key: GOOGLE_CLIENT_ID
+        value: 408241181373-pi1t5jhsc8osii2rosp5pld0taf1itia.apps.googleusercontent.com
       - key: CORS_ALLOWED_ORIGINS
         value: https://shabaries.github.io,https://mahi-voice-assist-web.onrender.com
       - key: PDF_OCR_LANG
@@ -40,3 +42,5 @@ services:
     envVars:
       - key: VITE_API_BASE_URL
         value: https://mahi-voice-assist-api.onrender.com
+      - key: VITE_GOOGLE_CLIENT_ID
+        value: 408241181373-pi1t5jhsc8osii2rosp5pld0taf1itia.apps.googleusercontent.com

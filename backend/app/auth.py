@@ -1,15 +1,19 @@
 import datetime
+import secrets
 from typing import Optional
 import bcrypt
 import jwt
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
+from google.auth.transport import requests as google_requests
+from google.oauth2 import id_token as google_id_token
 
 from app.config import settings
 from app.database import get_db
 from app.models import User
-from app.schemas import UserRegister, UserLogin, UserResponse, TokenResponse, LanguagePreferenceUpdate, UserRoleUpdate
+from app.schemas import GoogleCredential, UserRegister, UserLogin, UserResponse, TokenResponse, LanguagePreferenceUpdate, UserRoleUpdate
 
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
 security = HTTPBearer(auto_error=False)
@@ -123,6 +127,55 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
         "token_type": "bearer",
         "user": user
     }
+
+@router.post("/google", response_model=TokenResponse)
+def login_with_google(body: GoogleCredential, db: Session = Depends(get_db)):
+    if not settings.GOOGLE_CLIENT_ID:
+        raise HTTPException(status_code=503, detail="Google sign-in is not configured.")
+    try:
+        claims = google_id_token.verify_oauth2_token(
+            body.credential,
+            google_requests.Request(),
+            settings.GOOGLE_CLIENT_ID,
+        )
+    except Exception as exc:
+        # Do not expose token-validation details to callers.
+        raise HTTPException(status_code=401, detail="Google sign-in could not be verified.") from exc
+
+    google_sub = claims.get("sub")
+    email = (claims.get("email") or "").strip().lower()
+    name = (claims.get("name") or "Google user").strip()[:100]
+    if not google_sub or not email or len(email) > 100 or claims.get("email_verified") is not True:
+        raise HTTPException(status_code=401, detail="Google did not provide a verified account.")
+
+    user = db.query(User).filter(User.google_sub == google_sub).first()
+    if user is None:
+        user = db.query(User).filter(User.email == email).first()
+        if user is not None:
+            if user.google_sub and user.google_sub != google_sub:
+                raise HTTPException(status_code=409, detail="This email is already linked to another Google account.")
+            if not user.google_sub and not (email.endswith("@gmail.com") or claims.get("hd")):
+                raise HTTPException(status_code=409, detail="This email already has an account. Sign in with its password first.")
+            user.google_sub = google_sub
+        else:
+            user = User(
+                name=name,
+                email=email,
+                google_sub=google_sub,
+                # Google-only users have no usable password login.
+                password_hash=hash_password(secrets.token_urlsafe(48)),
+                role="user",
+            )
+            db.add(user)
+        try:
+            db.commit()
+            db.refresh(user)
+        except IntegrityError as exc:
+            db.rollback()
+            raise HTTPException(status_code=409, detail="This Google account could not be linked. Please try again.") from exc
+
+    token = create_access_token({"sub": str(user.id), "role": user.role})
+    return {"access_token": token, "token_type": "bearer", "user": user}
 
 @router.get("/me", response_model=UserResponse)
 def get_me(current_user: User = Depends(get_current_user)):

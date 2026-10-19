@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { authService } from '../services/authService';
 
 const AuthContext = createContext(null);
@@ -40,6 +40,13 @@ export function AuthProvider({ children }) {
     return data;
   };
 
+  const loginWithGoogle = useCallback(async (credential) => {
+    const data = await authService.loginWithGoogle(credential);
+    setUser(data.user);
+    setToken(data.access_token);
+    return data;
+  }, []);
+
   const register = async (name, email, password) => {
     const data = await authService.register(name, email, password);
     setUser(data.user);
@@ -60,7 +67,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout, updatePreferredLanguage, loading, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, token, login, loginWithGoogle, register, logout, updatePreferredLanguage, loading, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );
