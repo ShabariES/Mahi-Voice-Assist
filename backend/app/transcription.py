@@ -13,7 +13,7 @@ async def transcribe_with_fallback(content: bytes, filename: str, content_type: 
     groq_key = settings.GROQ_API_KEY.strip()
     openai_key = settings.OPENAI_API_KEY.strip()
     if sarvam_key:
-        sarvam_mode = "transcribe" if language_code in {"hi-IN", "ta-IN"} else "translate"
+        sarvam_mode = "transcribe" if language_code == "ta-IN" else "translate"
         sarvam_language = language_code if sarvam_mode == "transcribe" else "unknown"
         providers.append((
             "sarvam_saaras_v4",

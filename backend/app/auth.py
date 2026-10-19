@@ -136,7 +136,7 @@ def update_preferred_language(
 ):
     from app.languages import SUPPORTED_LANGUAGES
     if body.preferred_language not in SUPPORTED_LANGUAGES:
-        raise HTTPException(status_code=422, detail="Choose English, Hindi, or Tamil.")
+        raise HTTPException(status_code=422, detail="Choose English or Tamil.")
     current_user.preferred_language = body.preferred_language
     db.commit()
     db.refresh(current_user)

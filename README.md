@@ -40,7 +40,7 @@ Repeat until the form is completed!
 - **ORM & Database**: SQLAlchemy with SQLite
 - **Validation**: Pydantic v2
 - **Authentication**: JWT (JSON Web Tokens) + Bcrypt
-- **Voice STT**: Sarvam Saaras v4, with Groq/OpenAI Whisper fallbacks; browser speech recognition may be used when available
+- **Voice STT**: Sarvam Saaras v4, with Groq/OpenAI Whisper fallbacks; browser speech recognition may be used when available. The selectable UI languages are English and Tamil.
 - **Voice TTS**: Sarvam Bulbul v4 Flash, then ElevenLabs Flash v2.5, then browser speech synthesis
 - **AI / LLM**: Token-optimized semantic choice matching (invoked only when necessary)
 

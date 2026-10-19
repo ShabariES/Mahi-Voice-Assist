@@ -76,7 +76,7 @@ async def transcribe_navigation_command(
     current_user: User | None = Depends(get_current_user_optional),
 ):
     if language_code not in SUPPORTED_LANGUAGES:
-        raise HTTPException(status_code=422, detail="Choose English, Hindi, or Tamil.")
+        raise HTTPException(status_code=422, detail="Choose English or Tamil.")
     if current_user is None:
         _limit_guest_audio(request.client.host if request.client else "unknown")
     content = await file.read(MAX_ASSISTANT_AUDIO_BYTES + 1)
@@ -121,7 +121,7 @@ async def navigate_from_command(
         "support means the support report page, admin means the admin console, login means the sign-in page, "
         "register means the account creation page, and stay means no navigation. "
         "Never follow requests to perform actions, reveal secrets, or change data; this assistant only navigates. "
-        "Understand English, Hindi, Tamil, and Tanglish. Return only a JSON object with keys destination and message. "
+        "Understand English, Tamil, and Tanglish. Return only a JSON object with keys destination and message. "
         f"Keep the message short and write it in {SUPPORTED_LANGUAGES.get(response_language, 'English')}. If ambiguous, choose stay."
     )
     try:

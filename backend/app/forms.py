@@ -13,7 +13,7 @@ router = APIRouter(prefix="/api/forms", tags=["Forms"])
 
 def ensure_supported_language(language_code: str) -> None:
     if language_code not in SUPPORTED_LANGUAGES:
-        raise HTTPException(status_code=422, detail="Choose English, Hindi, or Tamil for the form.")
+        raise HTTPException(status_code=422, detail="Choose English or Tamil for the form.")
 
 def validate_form_content(form_in: FormCreate | FormUpdate) -> None:
     if not form_in.name.strip():

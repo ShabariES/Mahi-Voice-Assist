@@ -22,7 +22,7 @@ class TranslateRequest(BaseModel):
 @router.post("/translate")
 async def translate_texts(body: TranslateRequest, _: User = Depends(get_current_user)):
     if body.source_language_code not in SUPPORTED_LANGUAGES or body.target_language_code not in SUPPORTED_LANGUAGES:
-        raise HTTPException(status_code=422, detail="Choose English, Hindi, or Tamil.")
+        raise HTTPException(status_code=422, detail="Choose English or Tamil.")
     if body.source_language_code == body.target_language_code:
         return {"translations": body.texts}
     if any(len(text) > 2000 for text in body.texts):

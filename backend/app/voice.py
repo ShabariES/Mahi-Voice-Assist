@@ -79,7 +79,7 @@ def text_to_speech(body: TTSRequestBody, current_user: User = Depends(get_curren
     """
     api_key = settings.ELEVENLABS_API_KEY.strip() if settings.ELEVENLABS_API_KEY else ""
     sarvam_key = settings.SARVAM_API_KEY.strip()
-    if sarvam_key and body.language_code in {"en-IN", "hi-IN", "ta-IN"}:
+    if sarvam_key and body.language_code in {"en-IN", "ta-IN"}:
         try:
             response = httpx.post(
                 "https://api.sarvam.ai/text-to-speech",
@@ -151,7 +151,7 @@ async def transcribe_audio(
     """
     content = await file.read()
     if language_code not in SUPPORTED_LANGUAGES:
-        raise HTTPException(status_code=422, detail="Choose English, Hindi, or Tamil.")
+        raise HTTPException(status_code=422, detail="Choose English or Tamil.")
     if not content or len(content) < 100:
         return {"text": "", "message": "Audio file was too short or empty."}
 
