@@ -102,6 +102,7 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
+    <>
     <nav className="navbar" lang={languageCode}>
       <Link to="/" className="nav-brand">
         <img
@@ -176,11 +177,12 @@ export default function Navbar() {
           </div>
         )}
       </div>
-      {!isInstalled && (
-        <button type="button" className="btn btn-primary nav-install nav-install-floating" onClick={handleInstall}>
-          <Icon name="download" /> <span>{t('Install app')}</span>
-        </button>
-      )}
     </nav>
+    {!isInstalled && (
+      <button type="button" className="btn btn-primary nav-install nav-install-floating" onClick={handleInstall}>
+        <Icon name="download" /> <span>{t('Install app')}</span>
+      </button>
+    )}
+    </>
   );
 }
