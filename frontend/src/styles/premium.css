@@ -225,6 +225,23 @@ body {
   white-space: nowrap;
 }
 
+.nav-install-floating {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1001;
+  min-height: 48px;
+  padding-inline: 1.05rem;
+  border: 1px solid rgba(255, 226, 255, 0.55);
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(116, 39, 168, 0.42), 0 0 0 4px rgba(184, 76, 255, 0.12);
+}
+
+.nav-install-floating:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(116, 39, 168, 0.52), 0 0 0 5px rgba(184, 76, 255, 0.16);
+}
+
 .nav-link {
   display: inline-flex;
   align-items: center;
@@ -1821,12 +1838,6 @@ body {
     gap: 0.75rem;
   }
 
-  .nav-user .nav-install {
-    grid-area: install;
-    width: 100%;
-    justify-content: center;
-  }
-
   .nav-language-control select {
     width: min(58%, 220px);
     max-width: 220px;
@@ -1980,11 +1991,6 @@ body {
     border-left: 1px solid var(--border-subtle);
   }
 
-  .nav-install {
-    min-height: 42px;
-    padding-inline: 0.75rem;
-  }
-
   .nav-language-control {
     gap: 0.5rem;
     white-space: nowrap;
@@ -2035,10 +2041,6 @@ body {
   .nav-user-badge .user-role-badge,
   .nav-language-control > span,
   .nav-logout > span {
-    display: none;
-  }
-
-  .nav-user .nav-install > span {
     display: none;
   }
 

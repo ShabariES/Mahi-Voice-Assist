@@ -149,11 +149,6 @@ export default function Navbar() {
             </div>
 
             <div className="nav-user">
-              {!isInstalled && (
-                <button type="button" className="btn btn-secondary nav-install" onClick={handleInstall}>
-                  <Icon name="download" /> <span>{t('Install app')}</span>
-                </button>
-              )}
               <label className="nav-language-control">
                 <span>{t('Language')}</span>
                 <select value={user?.preferred_language || 'en-IN'} onChange={handleLanguageChange} aria-label="Preferred language">
@@ -172,11 +167,6 @@ export default function Navbar() {
           </>
         ) : (
           <div className="nav-primary-links nav-auth-links">
-            {!isInstalled && (
-              <button type="button" className="btn btn-secondary nav-install" onClick={handleInstall}>
-                <Icon name="download" /> <span>{t('Install app')}</span>
-              </button>
-            )}
             <Link to="/login" onClick={closeMobileMenu} className="btn btn-secondary">
               {t('Login')}
             </Link>
@@ -186,6 +176,11 @@ export default function Navbar() {
           </div>
         )}
       </div>
+      {!isInstalled && (
+        <button type="button" className="btn btn-primary nav-install nav-install-floating" onClick={handleInstall}>
+          <Icon name="download" /> <span>{t('Install app')}</span>
+        </button>
+      )}
     </nav>
   );
 }
