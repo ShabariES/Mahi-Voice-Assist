@@ -36,11 +36,6 @@ def ensure_language_columns():
                         # Legacy forms already contain localized text, so its current language is the source.
                         connection.execute(text("UPDATE forms SET source_language_code = language_code"))
 
-        if "users" in inspector.get_table_names() and "google_sub" not in {item["name"] for item in inspector.get_columns("users")}:
-            connection.execute(text("ALTER TABLE users ADD COLUMN google_sub VARCHAR(255)"))
-        if "users" in inspector.get_table_names():
-            connection.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS uq_users_google_sub ON users (google_sub)"))
-
 def seed_initial_data():
     """Optionally seed local demos or provision a first admin from explicit environment values."""
     db = SessionLocal()

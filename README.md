@@ -70,7 +70,6 @@ cd backend
 # 2. Copy .env.example to .env and set a private JWT_SECRET
 # DATABASE_URL=sqlite:///./voice_form.db
 # JWT_SECRET=<long-random-secret>
-# GOOGLE_CLIENT_ID=<same web OAuth client ID configured in frontend/.env.local>
 # Set provider keys for the speech/translation services you want to use.
 # Demo accounts and sample forms are opt-in with SEED_DEMO_DATA=true (development only).
 
@@ -114,15 +113,11 @@ cd frontend
 # 1. Install dependencies (already installed)
 npm install
 
-# Copy .env.example to .env.local for local Google sign-in configuration
-
 # 2. Run the Vite development server
 npm run dev
 ```
 
 The frontend runs at `http://localhost:5173`.
-
-For Google sign-in, the web OAuth client ID is public configuration and must match in `backend/.env` (`GOOGLE_CLIENT_ID`) and `frontend/.env.local` (`VITE_GOOGLE_CLIENT_ID`). In Google Cloud Console, configure an OAuth client of type **Web application** and add each exact local or deployed site origin under **Authorized JavaScript origins** (for example `http://localhost:5174`, `https://mahi-voice-assist-web.onrender.com`, and `https://shabaries.github.io`). Then restart the backend and rebuild/redeploy the frontend. The backend verifies Google's signed ID token and verified email before issuing the app's own session token.
 
 ### Installable Progressive Web App (PWA)
 
