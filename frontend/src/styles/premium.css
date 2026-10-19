@@ -220,6 +220,11 @@ body {
   gap: 0.55rem;
 }
 
+.nav-install {
+  gap: 0.48rem;
+  white-space: nowrap;
+}
+
 .nav-link {
   display: inline-flex;
   align-items: center;
@@ -1797,6 +1802,7 @@ body {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
+      'install install'
       'language language'
       'profile logout';
     width: 100%;
@@ -1813,6 +1819,12 @@ body {
     width: 100%;
     justify-content: space-between;
     gap: 0.75rem;
+  }
+
+  .nav-user .nav-install {
+    grid-area: install;
+    width: 100%;
+    justify-content: center;
   }
 
   .nav-language-control select {
@@ -1968,6 +1980,11 @@ body {
     border-left: 1px solid var(--border-subtle);
   }
 
+  .nav-install {
+    min-height: 42px;
+    padding-inline: 0.75rem;
+  }
+
   .nav-language-control {
     gap: 0.5rem;
     white-space: nowrap;
@@ -2018,6 +2035,10 @@ body {
   .nav-user-badge .user-role-badge,
   .nav-language-control > span,
   .nav-logout > span {
+    display: none;
+  }
+
+  .nav-user .nav-install > span {
     display: none;
   }
 

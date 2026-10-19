@@ -14,6 +14,7 @@ const TAMIL_NAV_TRANSLATIONS = {
   Logout: 'வெளியேறு',
   Login: 'உள்நுழை',
   Register: 'பதிவு செய்',
+  'Install app': 'செயலியை நிறுவு',
   'Close navigation menu': 'வழிசெலுத்தல் பட்டியை மூடு',
   'Open navigation menu': 'வழிசெலுத்தல் பட்டியைத் திற',
 };
@@ -23,9 +24,11 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [isInstalled, setIsInstalled] = useState(false);
   const [translations, setTranslations] = useState({});
   const languageCode = user?.preferred_language || 'en-IN';
-  const navTexts = ['Language', 'Dashboard', 'Forms', 'Report an issue', 'Management', 'Logout', 'Login', 'Register', 'Close navigation menu', 'Open navigation menu'];
+  const navTexts = ['Language', 'Dashboard', 'Forms', 'Report an issue', 'Management', 'Logout', 'Login', 'Register', 'Install app', 'Close navigation menu', 'Open navigation menu'];
   const t = (text) => translations[text] || text;
 
   useEffect(() => {
@@ -48,6 +51,27 @@ export default function Navbar() {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
+  useEffect(() => {
+    const handleInstallPrompt = (event) => {
+      event.preventDefault();
+      setInstallPrompt(event);
+    };
+    const handleInstalled = () => {
+      setIsInstalled(true);
+      setInstallPrompt(null);
+    };
+
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+      setIsInstalled(true);
+    }
+    window.addEventListener('beforeinstallprompt', handleInstallPrompt);
+    window.addEventListener('appinstalled', handleInstalled);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
+      window.removeEventListener('appinstalled', handleInstalled);
+    };
+  }, []);
+
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   const handleLogout = () => {
@@ -62,6 +86,17 @@ export default function Navbar() {
     } catch {
       window.alert('Could not save your language preference. Please try again.');
     }
+  };
+
+  const handleInstall = async () => {
+    if (!installPrompt) {
+      window.alert('To install Mahi, open your browser menu and choose “Install app” or “Add to Home Screen”.');
+      return;
+    }
+    await installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === 'accepted') setIsInstalled(true);
+    setInstallPrompt(null);
   };
 
   const isActive = (path) => location.pathname === path;
@@ -114,6 +149,11 @@ export default function Navbar() {
             </div>
 
             <div className="nav-user">
+              {!isInstalled && (
+                <button type="button" className="btn btn-secondary nav-install" onClick={handleInstall}>
+                  <Icon name="download" /> <span>{t('Install app')}</span>
+                </button>
+              )}
               <label className="nav-language-control">
                 <span>{t('Language')}</span>
                 <select value={user?.preferred_language || 'en-IN'} onChange={handleLanguageChange} aria-label="Preferred language">
@@ -132,6 +172,11 @@ export default function Navbar() {
           </>
         ) : (
           <div className="nav-primary-links nav-auth-links">
+            {!isInstalled && (
+              <button type="button" className="btn btn-secondary nav-install" onClick={handleInstall}>
+                <Icon name="download" /> <span>{t('Install app')}</span>
+              </button>
+            )}
             <Link to="/login" onClick={closeMobileMenu} className="btn btn-secondary">
               {t('Login')}
             </Link>
