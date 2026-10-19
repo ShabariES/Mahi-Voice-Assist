@@ -687,24 +687,24 @@ export default function Admin() {
         </div>
         </>
       ) : activeTab === 'bulk' && isAdmin ? (
-        <section className="card" style={{ padding: '1.5rem' }}>
-          <h2 style={{ marginTop: 0 }}>Fill a form for multiple users</h2>
-          <p>Upload up to 20 PDFs, including a single PDF with a labeled table of people. Records are matched by registered email, or by a unique exact name when no email is present. Review every value and account match before importing; OCR can misread scanned or unusual layouts.</p>
+        <section className="card bulk-pdf-panel">
+          <h2>Fill a form for multiple users</h2>
+          <p className="bulk-pdf-description">Upload up to 20 PDFs, including a single PDF with a labeled table of people. Records are matched by registered email, or by a unique exact name when no email is present. Review every value and account match before importing; OCR can misread scanned or unusual layouts.</p>
           <p className="admin-pdf-privacy-note">PDF contents are sent to this server for extraction. Do not upload documents you are not authorized to process. Review the extracted details before creating user sessions.</p>
-          <div style={{ display: 'grid', gap: '1rem', maxWidth: '760px' }}>
-            <label style={{ display: 'grid', gap: '0.45rem' }}>
+          <div className="bulk-pdf-fields">
+            <label className="bulk-pdf-field">
               <strong>Form</strong>
               <select className="form-select" value={bulkFormId} onChange={(event) => { setBulkFormId(event.target.value); setBulkRecords([]); setBulkResult(null); }}>
                 <option value="">Choose a form…</option>
                 {forms.map((form) => <option value={form.id} key={form.id}>{form.name}</option>)}
               </select>
             </label>
-            <label style={{ display: 'grid', gap: '0.45rem' }}>
+            <label className="bulk-pdf-field">
               <strong>PDF files</strong>
-              <input type="file" accept="application/pdf,.pdf" multiple onChange={(event) => { setBulkFiles(Array.from(event.target.files || [])); setBulkRecords([]); setBulkResult(null); }} />
-              <small>{bulkFiles.length ? `${bulkFiles.length} PDF${bulkFiles.length === 1 ? '' : 's'} selected` : 'Each PDF can contain one or more people. Maximum 12 MB and 40 pages per file.'}</small>
+              <input className="bulk-pdf-file-input" type="file" accept="application/pdf,.pdf" multiple onChange={(event) => { setBulkFiles(Array.from(event.target.files || [])); setBulkRecords([]); setBulkResult(null); }} />
+              <small className="bulk-pdf-hint">{bulkFiles.length ? `${bulkFiles.length} PDF${bulkFiles.length === 1 ? '' : 's'} selected` : 'Each PDF can contain one or more people. Maximum 12 MB and 40 pages per file.'}</small>
             </label>
-            <div>
+            <div className="bulk-pdf-actions">
               <Button variant="primary" onClick={handleBulkPreview} loading={bulkPreviewLoading} disabled={bulkPreviewLoading || bulkImporting || !bulkFormId || !bulkFiles.length}>
                 {bulkPreviewLoading ? 'Reading PDFs…' : 'Extract and review records'}
               </Button>
