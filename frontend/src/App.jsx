@@ -24,6 +24,16 @@ function AppLayout() {
 
   return (
     <div className="app-container" data-theme="dark">
+      <div className="ai-backdrop" aria-hidden="true">
+        <div className="ai-backdrop-orb">
+          <span className="ai-backdrop-ring ai-backdrop-ring-one" />
+          <span className="ai-backdrop-ring ai-backdrop-ring-two" />
+          <span className="ai-backdrop-node ai-backdrop-node-one" />
+          <span className="ai-backdrop-node ai-backdrop-node-two" />
+          <span className="ai-backdrop-node ai-backdrop-node-three" />
+          <span className="ai-backdrop-node ai-backdrop-node-four" />
+        </div>
+      </div>
       <Navbar />
       <main className="main-content page-transition" key={location.pathname}>
         <Routes>

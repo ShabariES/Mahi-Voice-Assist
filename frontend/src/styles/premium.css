@@ -76,6 +76,85 @@ body {
   pointer-events: none;
 }
 
+.ai-backdrop {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ai-backdrop-orb {
+  position: absolute;
+  top: 48%;
+  right: clamp(-10rem, -7vw, -4rem);
+  width: clamp(15rem, 31vw, 25rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba(231, 184, 255, 0.24);
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 31% 27%, rgba(255, 232, 255, 0.86), transparent 7%),
+    radial-gradient(ellipse at 34% 30%, rgba(255, 151, 224, 0.78), transparent 24%),
+    radial-gradient(ellipse at 68% 72%, rgba(130, 36, 207, 0.78), transparent 43%),
+    radial-gradient(ellipse at 40% 38%, rgba(61, 18, 101, 0.94), rgba(26, 11, 47, 0.97) 68%);
+  box-shadow:
+    inset -1.4rem -1rem 3rem rgba(8, 4, 17, 0.76),
+    inset 0.6rem 0.35rem 1.6rem rgba(255, 195, 247, 0.18),
+    0 0 4.5rem rgba(166, 65, 255, 0.2);
+  opacity: 0.32;
+  transform: translateY(-50%) rotate(-18deg);
+}
+
+.ai-backdrop-orb::before,
+.ai-backdrop-orb::after {
+  position: absolute;
+  inset: 18%;
+  border: 1px solid rgba(222, 165, 255, 0.19);
+  border-radius: 50%;
+  content: '';
+}
+
+.ai-backdrop-orb::before {
+  background: repeating-linear-gradient(0deg, transparent 0 2.8rem, rgba(211, 153, 255, 0.08) 2.85rem 2.9rem, transparent 2.95rem 3.6rem);
+  mask-image: radial-gradient(ellipse, #000 38%, transparent 72%);
+}
+
+.ai-backdrop-orb::after {
+  inset: 7% -15%;
+  border-color: rgba(255, 151, 226, 0.46);
+  transform: rotate(-29deg) scaleY(0.43);
+}
+
+.ai-backdrop-ring {
+  position: absolute;
+  inset: 12% -11%;
+  border: 1px solid rgba(194, 120, 255, 0.26);
+  border-radius: 50%;
+  transform: rotate(37deg) scaleY(0.55);
+}
+
+.ai-backdrop-ring-two {
+  inset: -9% 20%;
+  border-color: rgba(255, 166, 228, 0.2);
+  transform: rotate(31deg) scaleX(0.48);
+}
+
+.ai-backdrop-node {
+  position: absolute;
+  z-index: 1;
+  width: 0.65rem;
+  aspect-ratio: 1;
+  border: 2px solid rgba(255, 238, 255, 0.9);
+  border-radius: 50%;
+  background: #e87bd8;
+  box-shadow: 0 0 1.2rem rgba(228, 104, 255, 0.9);
+}
+
+.ai-backdrop-node-one { top: 14%; left: 50%; }
+.ai-backdrop-node-two { top: 47%; right: 8%; }
+.ai-backdrop-node-three { bottom: 14%; left: 35%; }
+.ai-backdrop-node-four { top: 54%; left: 7%; width: 0.45rem; }
+
 .main-content {
   position: relative;
   z-index: 1;
@@ -1948,6 +2027,10 @@ body {
     animation: ambient-wave 18s ease-in-out infinite alternate;
   }
 
+  .ai-backdrop-orb {
+    animation: ai-orb-drift 24s ease-in-out infinite alternate;
+  }
+
   .dashboard-hero-note {
     animation: glass-float 7s ease-in-out infinite;
   }
@@ -1961,9 +2044,21 @@ body {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
   }
+
+  @keyframes ai-orb-drift {
+    from { transform: translate3d(0, -50%, 0) rotate(-18deg); }
+    to { transform: translate3d(-12px, calc(-50% - 10px), 0) rotate(-12deg); }
+  }
 }
 
 @media (max-width: 640px) {
+  .ai-backdrop-orb {
+    top: 52%;
+    right: -11rem;
+    width: 19rem;
+    opacity: 0.19;
+  }
+
   .app-container::before {
     opacity: 0.5;
     filter: blur(24px) saturate(115%);
