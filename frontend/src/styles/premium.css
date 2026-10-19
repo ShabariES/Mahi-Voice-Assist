@@ -227,7 +227,7 @@ body {
 
 .nav-install-floating {
   position: fixed;
-  right: 1.25rem;
+  left: 50%;
   bottom: 1.25rem;
   z-index: 1001;
   min-height: 48px;
@@ -235,10 +235,11 @@ body {
   border: 1px solid rgba(255, 226, 255, 0.55);
   border-radius: 999px;
   box-shadow: 0 10px 30px rgba(116, 39, 168, 0.42), 0 0 0 4px rgba(184, 76, 255, 0.12);
+  transform: translateX(-50%);
 }
 
 .nav-install-floating:hover {
-  transform: translateY(-2px);
+  transform: translate(-50%, -2px);
   box-shadow: 0 14px 34px rgba(116, 39, 168, 0.52), 0 0 0 5px rgba(184, 76, 255, 0.16);
 }
 
