@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import Icon from '../components/Icon';
+import GoogleSignInButton from '../components/GoogleSignInButton';
 import '../styles/login.css';
 
 export default function Register() {
@@ -81,6 +82,8 @@ export default function Register() {
             Register
           </Button>
         </form>
+
+        <GoogleSignInButton />
 
         <div className="auth-footer">
           Already have an account?

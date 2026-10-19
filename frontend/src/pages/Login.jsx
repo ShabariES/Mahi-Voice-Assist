@@ -1,32 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import Icon from '../components/Icon';
+import GoogleSignInButton from '../components/GoogleSignInButton';
 import '../styles/login.css';
-
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
-let googleScriptPromise;
-
-function loadGoogleIdentity() {
-  if (window.google?.accounts?.id) return Promise.resolve();
-  if (!googleScriptPromise) {
-    googleScriptPromise = new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.async = true;
-      script.defer = true;
-      script.onload = resolve;
-      script.onerror = () => {
-        googleScriptPromise = null;
-        reject(new Error('Google sign-in could not be loaded.'));
-      };
-      document.head.appendChild(script);
-    });
-  }
-  return googleScriptPromise;
-}
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -34,46 +13,9 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const googleButtonRef = useRef(null);
 
-  const { login, loginWithGoogle } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!GOOGLE_CLIENT_ID || !googleButtonRef.current) return undefined;
-    let active = true;
-    loadGoogleIdentity().then(() => {
-      if (!active || !googleButtonRef.current) return;
-      window.google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: async ({ credential }) => {
-          setError('');
-          setGoogleLoading(true);
-          try {
-            await loginWithGoogle(credential);
-            navigate('/dashboard');
-          } catch (err) {
-            setError(err.response?.data?.detail || 'Google sign-in failed. Please try again.');
-          } finally {
-            setGoogleLoading(false);
-          }
-        },
-        auto_select: false,
-      });
-      googleButtonRef.current.replaceChildren();
-      window.google.accounts.id.renderButton(googleButtonRef.current, {
-        theme: 'outline',
-        size: 'large',
-        shape: 'rectangular',
-        text: 'continue_with',
-        width: Math.min(360, Math.max(240, googleButtonRef.current.clientWidth)),
-      });
-    }).catch((err) => {
-      if (active) setError(err.message);
-    });
-    return () => { active = false; };
-  }, [loginWithGoogle, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -143,15 +85,7 @@ export default function Login() {
           </Button>
         </form>
 
-        {GOOGLE_CLIENT_ID && (
-          <>
-            <div className="auth-divider"><span>or continue with</span></div>
-            <div className="google-signin-shell" aria-busy={googleLoading}>
-              <div ref={googleButtonRef} className="google-signin-button" />
-              {googleLoading && <p className="google-signin-status" role="status">Signing in with Google…</p>}
-            </div>
-          </>
-        )}
+        <GoogleSignInButton />
 
         <div className="auth-footer">
           Don't have an account?
