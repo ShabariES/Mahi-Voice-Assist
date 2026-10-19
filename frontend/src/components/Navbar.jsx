@@ -69,7 +69,13 @@ export default function Navbar() {
   return (
     <nav className="navbar" lang={languageCode}>
       <Link to="/" className="nav-brand">
-        <div className="nav-brand-icon"><Icon name="microphone" /></div>
+        <img
+          className="nav-brand-icon nav-brand-logo"
+          src={`${import.meta.env.BASE_URL}mahi-logo.svg`}
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+        />
         <span className="nav-brand-name">Mahi</span>
         <span className="nav-brand-caption">VOICE FORMS</span>
       </Link>
