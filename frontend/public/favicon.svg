@@ -1,15 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <defs>
-    <linearGradient id="mahiTile" x1="8" y1="4" x2="57" y2="61" gradientUnits="userSpaceOnUse"><stop stop-color="#DCA2FF"/><stop offset=".52" stop-color="#A544E5"/><stop offset="1" stop-color="#61218F"/></linearGradient>
-    <linearGradient id="mahiSignal" x1="19" y1="20" x2="46" y2="45" gradientUnits="userSpaceOnUse"><stop stop-color="#FFF"/><stop offset="1" stop-color="#FFE0F7"/></linearGradient>
+    <linearGradient id="mahiBase" x1="8" y1="5" x2="57" y2="60" gradientUnits="userSpaceOnUse"><stop stop-color="#DCA2FF"/><stop offset=".5" stop-color="#A544E5"/><stop offset="1" stop-color="#542080"/></linearGradient>
+    <linearGradient id="mahiWave" x1="19" y1="23" x2="47" y2="43" gradientUnits="userSpaceOnUse"><stop stop-color="#FFF"/><stop offset=".58" stop-color="#FFE9FC"/><stop offset="1" stop-color="#FFC1ED"/></linearGradient>
   </defs>
-  <rect x="3" y="3" width="58" height="58" rx="19" fill="url(#mahiTile)"/>
+  <rect x="3" y="3" width="58" height="58" rx="19" fill="url(#mahiBase)"/>
   <rect x="3.6" y="3.6" width="56.8" height="56.8" rx="18.4" stroke="#FFF" stroke-opacity=".32"/>
-  <path d="M16 27.5c-2.4 2.6-2.4 6.4 0 9" stroke="#FFD3F3" stroke-width="2" stroke-linecap="round" opacity=".86"/>
-  <path d="M12.2 24c-4.3 4.6-4.3 11.4 0 16" stroke="#FFC1EE" stroke-width="1.7" stroke-linecap="round" opacity=".62"/>
-  <path d="M48 27.5c2.4 2.6 2.4 6.4 0 9" stroke="#FFD3F3" stroke-width="2" stroke-linecap="round" opacity=".86"/>
-  <path d="M51.8 24c4.3 4.6 4.3 11.4 0 16" stroke="#FFC1EE" stroke-width="1.7" stroke-linecap="round" opacity=".62"/>
-  <path d="M20 44V20.5L32 33l12-12.5V44" stroke="url(#mahiSignal)" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M26.2 49h11.6" stroke="#FFC4EF" stroke-width="2.4" stroke-linecap="round"/>
-  <circle cx="32" cy="49" r="2.2" fill="#FFF"/>
+  <path d="M18 14h27a8 8 0 0 1 8 8v17a8 8 0 0 1-8 8H31l-11 8v-8h-2a8 8 0 0 1-8-8V22a8 8 0 0 1 8-8Z" fill="#3E155F" fill-opacity=".25" stroke="#FFF" stroke-opacity=".78" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M18.5 36V27l6.2 8 7.2-13 7.2 13 6.2-8v9" stroke="url(#mahiWave)" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M47.5 12.5 49 16l3.5 1.5-3.5 1.5-1.5 3.5L46 19l-3.5-1.5L46 16l1.5-3.5Z" fill="#FFC2EE"/>
+  <circle cx="16" cy="22" r="1.2" fill="#FFF" opacity=".9"/>
+  <circle cx="48" cy="39" r="1.2" fill="#FFC2EE"/>
 </svg>
