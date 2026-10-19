@@ -220,6 +220,12 @@ body {
   font-size: 0.87rem;
 }
 
+.navbar[lang='ta-IN'] .nav-link {
+  gap: 0.4rem;
+  padding-inline: 0.58rem;
+  font-size: 0.82rem;
+}
+
 .nav-link:hover,
 .nav-link.active {
   color: var(--text-main);

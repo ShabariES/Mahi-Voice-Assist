@@ -5,6 +5,19 @@ import Icon from './Icon';
 import { SUPPORTED_LANGUAGES } from '../constants/languages';
 import { translationService } from '../services/translationService';
 
+const TAMIL_NAV_TRANSLATIONS = {
+  Language: 'மொழி',
+  Dashboard: 'முகப்பு',
+  Forms: 'படிவங்கள்',
+  'Report an issue': 'உதவி',
+  Management: 'நிர்வாகம்',
+  Logout: 'வெளியேறு',
+  Login: 'உள்நுழை',
+  Register: 'பதிவு செய்',
+  'Close navigation menu': 'வழிசெலுத்தல் பட்டியை மூடு',
+  'Open navigation menu': 'வழிசெலுத்தல் பட்டியைத் திற',
+};
+
 export default function Navbar() {
   const { user, logout, updatePreferredLanguage, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -19,6 +32,10 @@ export default function Navbar() {
     let cancelled = false;
     if (languageCode === 'en-IN') {
       setTranslations({});
+      return undefined;
+    }
+    if (languageCode === 'ta-IN') {
+      setTranslations(TAMIL_NAV_TRANSLATIONS);
       return undefined;
     }
     translationService.translateTexts(navTexts, 'en-IN', languageCode)
@@ -50,7 +67,7 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" lang={languageCode}>
       <Link to="/" className="nav-brand">
         <div className="nav-brand-icon"><Icon name="microphone" /></div>
         <span className="nav-brand-name">Mahi</span>
