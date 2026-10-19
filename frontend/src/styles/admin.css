@@ -6,6 +6,14 @@
   padding-bottom: 0.5rem;
 }
 
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
 .admin-tab {
   padding: 0.5rem 1.25rem;
   border-radius: var(--radius-md);
@@ -263,6 +271,17 @@
   .section-header:has(.dashboard-title) > .btn {
     width: 100%;
     min-height: 48px;
+    justify-content: center;
+  }
+
+  .admin-header-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-header-actions > .btn {
+    width: 100%;
     justify-content: center;
   }
 

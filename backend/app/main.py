@@ -14,6 +14,7 @@ from app.issues import router as issues_router
 from app.bulk_pdf import router as bulk_pdf_router
 from app.assistant import router as assistant_router
 from app.localization import router as localization_router
+from app.admin import router as admin_router
 
 def ensure_language_columns():
     inspector = inspect(engine)
@@ -232,6 +233,7 @@ app.include_router(issues_router)
 app.include_router(bulk_pdf_router)
 app.include_router(assistant_router)
 app.include_router(localization_router)
+app.include_router(admin_router)
 
 @app.get("/")
 def root():

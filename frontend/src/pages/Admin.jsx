@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { formService } from '../services/formService';
 import { authService } from '../services/authService';
 import { issueService } from '../services/issueService';
+import { adminService } from '../services/adminService';
 import { formatDate } from '../utils/formatters';
 import { parseOptions } from '../utils/options';
 import { useVoice } from '../hooks/useVoice';
@@ -50,6 +51,7 @@ export default function Admin() {
   const [issueLoading, setIssueLoading] = useState(false);
   const [activeReplyReportId, setActiveReplyReportId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [bulkFormId, setBulkFormId] = useState('');
@@ -272,6 +274,26 @@ export default function Admin() {
   const selectAdminTab = (tab) => {
     setActiveTab(tab);
     if (tab === 'reports') loadIssueReports();
+  };
+
+  const handleExportAllData = async () => {
+    setExporting(true);
+    setError('');
+    try {
+      const file = await adminService.exportAllData();
+      const downloadUrl = URL.createObjectURL(file);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = `mahi-admin-export-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+    } catch (err) {
+      setError(getApiErrorMessage(err, 'Could not download the admin export.'));
+    } finally {
+      setExporting(false);
+    }
   };
 
   const toggleReplyVoice = (reportId) => {
@@ -575,11 +597,18 @@ export default function Admin() {
           <h1 className="dashboard-title">Management Console</h1>
           <p className="dashboard-desc">Manage voice forms, questions, and system accounts.</p>
         </div>
-        {activeTab === 'forms' && (
-          <Button variant="primary" onClick={handleOpenCreateModal}>
-            <Icon name="plus" /> Create New Form
-          </Button>
-        )}
+        <div className="admin-header-actions">
+          {isAdmin && (
+            <Button variant="secondary" onClick={handleExportAllData} disabled={exporting}>
+              <Icon name="download" /> {exporting ? 'Preparing export…' : 'Export all data'}
+            </Button>
+          )}
+          {activeTab === 'forms' && (
+            <Button variant="primary" onClick={handleOpenCreateModal}>
+              <Icon name="plus" /> Create New Form
+            </Button>
+          )}
+        </div>
       </div>
 
       {error && <div className="alert alert-danger">{error}</div>}
