@@ -35,6 +35,8 @@
 }
 
 .navigation-assistant .navigation-assistant-launcher {
+  position: relative;
+  isolation: isolate;
   width: 3.75rem;
   height: 3.75rem;
   display: grid;
@@ -46,6 +48,37 @@
   box-shadow: 0 8px 26px rgba(103, 31, 154, 0.4);
   font-size: 1.65rem;
   line-height: 1;
+}
+
+.navigation-assistant .navigation-assistant-launcher::before {
+  position: absolute;
+  inset: -0.45rem -0.72rem;
+  z-index: -1;
+  border: 1px solid rgba(228, 166, 255, 0.55);
+  border-radius: 50%;
+  content: '';
+  transform: rotate(-32deg);
+  pointer-events: none;
+}
+
+.navigation-assistant .navigation-assistant-launcher::after {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.28rem;
+  width: 0.42rem;
+  height: 0.42rem;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #f47acb;
+  box-shadow: 0 0 12px rgba(255, 110, 210, 0.9);
+  content: '';
+  pointer-events: none;
+}
+
+.navigation-assistant .navigation-assistant-launcher > span {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 9px rgba(255, 220, 255, 0.45);
 }
 
 .navigation-assistant-launcher:hover,
@@ -131,5 +164,15 @@
   .navigation-assistant {
     right: 0.75rem;
     bottom: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .navigation-assistant .navigation-assistant-launcher::before {
+    animation: mahi-orbit 12s linear infinite;
+  }
+
+  @keyframes mahi-orbit {
+    to { transform: rotate(328deg); }
   }
 }

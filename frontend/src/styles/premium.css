@@ -1299,6 +1299,7 @@ body {
 /* Mahi product surface */
 .dashboard-hero {
   position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(250px, 0.85fr);
   align-items: center;
@@ -1314,15 +1315,30 @@ body {
   box-shadow: 0 24px 65px rgba(0, 0, 0, 0.2);
 }
 
+.dashboard-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 13% 24%, rgba(255, 255, 255, 0.72) 0 1px, transparent 2px),
+    radial-gradient(circle at 31% 76%, rgba(229, 175, 255, 0.68) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 68% 16%, rgba(255, 255, 255, 0.82) 0 1px, transparent 2px),
+    radial-gradient(circle at 92% 58%, rgba(255, 108, 203, 0.78) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 80% 27%, rgba(255, 219, 249, 0.96) 0 3px, rgba(241, 81, 189, 0.82) 4px 14px, rgba(185, 52, 199, 0.48) 15px 25px, transparent 26px);
+  content: '';
+  opacity: 0.62;
+  pointer-events: none;
+}
+
 .dashboard-hero::after {
   position: absolute;
   right: -110px;
   bottom: -250px;
   width: 430px;
   height: 430px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(232, 168, 255, 0.16);
   border-radius: 50%;
-  box-shadow: 0 0 0 35px rgba(255, 255, 255, 0.025), 0 0 0 75px rgba(255, 255, 255, 0.02);
+  box-shadow: 0 0 0 35px rgba(255, 255, 255, 0.025), 0 0 0 75px rgba(255, 255, 255, 0.02), inset 0 0 40px rgba(194, 75, 240, 0.08);
   content: '';
   pointer-events: none;
 }
