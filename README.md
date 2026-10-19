@@ -119,6 +119,10 @@ npm run dev
 
 The frontend runs at `http://localhost:5173`.
 
+### Installable Progressive Web App (PWA)
+
+The production frontend includes a web app manifest, Mahi app icons, and a service worker. On a deployed HTTPS site, install it from the browser's **Install app** option (Chrome/Edge) or **Add to Home Screen** (mobile Safari/Chrome). The service worker can load the app shell and cached static frontend files when offline. Login, API operations, voice providers, form submission, and PDF extraction still require a network connection. API responses, authentication data, and uploaded PDFs are not cached by the service worker.
+
 ---
 
 ## 👥 Account Roles & Local Bootstrap
