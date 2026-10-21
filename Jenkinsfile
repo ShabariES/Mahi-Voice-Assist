@@ -7,13 +7,34 @@ pipeline {
     }
 
     triggers {
-        // Useful when Jenkins is running locally and GitHub cannot reach it.
-        // Jenkins builds only when SCM polling detects a change.
+        // Keep the API responsive with a lightweight request, and poll GitHub
+        // separately so only source changes trigger a Render deployment.
+        cron('H/10 * * * *')
         pollSCM('H/5 * * * *')
     }
 
     stages {
+        stage('Keep API responsive') {
+            when {
+                triggeredBy 'TimerTrigger'
+            }
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'curl --fail --silent --show-error --max-time 30 --output /dev/null https://mahi-voice-assist-api.onrender.com/'
+                    } else {
+                        bat 'curl.exe --fail --silent --show-error --max-time 30 --output NUL https://mahi-voice-assist-api.onrender.com/'
+                    }
+                }
+            }
+        }
+
         stage('Deploy to Render') {
+            when {
+                not {
+                    triggeredBy 'TimerTrigger'
+                }
+            }
             steps {
                 script {
                     withCredentials([
